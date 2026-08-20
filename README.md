@@ -15,6 +15,9 @@ Educational institutions struggle to maintain updated records of their alumni an
 
 ## ✨ Features
 
+#Post product feature:
+-Nearby alumini as per the linkedin working place.
+
 ### Core (MVP — built in this prototype)
 - 🔐 **Alumni Registration & Login** — secure sign-up/sign-in using email authentication
 - 👤 **Profile Management** — alumni can create and update their details (name, batch, branch, current company, location, contact, LinkedIn)
