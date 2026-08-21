@@ -63,7 +63,7 @@ export function AlumniTable({ profiles }: { profiles: AlumniProfile[] }) {
             {pageData.map(p=> {
               const col = (p as unknown as { college?: string }).college || "";
               const colOther = (p as unknown as { collegeOther?: string }).collegeOther || "";
-              const displayCol = col==="Other" && colOther ? colOther : col ? collegeShortName(col) : "—";
+              const displayCol = col==="Other" && colOther ? colOther : col ? collegeShortName(col) : "Not listed";
               return (
               <TableRow key={p.uid} className="hover:bg-[#F8F7F5]">
                 <TableCell>
@@ -75,10 +75,10 @@ export function AlumniTable({ profiles }: { profiles: AlumniProfile[] }) {
                 <TableCell className="max-w-[180px] truncate text-xs">{displayCol}</TableCell>
                 <TableCell><Badge variant="batch" className="rounded-none text-[11px]">{p.batch}</Badge></TableCell>
                 <TableCell><Badge variant={p.branch==="CSE"?"cse":p.branch==="ECE"?"ece":"generic"} className="rounded-none text-[11px]">{p.branch}</Badge></TableCell>
-                <TableCell className="text-sm">{p.company || "—"}</TableCell>
-                <TableCell><span className="inline-flex items-center gap-1 text-xs text-[#4B5563]">{p.location ? <><MapPin className="h-3 w-3 text-[#8B95A5]"/>{p.location}</> : "—"}</span></TableCell>
+                <TableCell className="text-sm">{p.company || "Not listed"}</TableCell>
+                <TableCell><span className="inline-flex items-center gap-1 text-xs text-[#4B5563]">{p.location ? <><MapPin className="h-3 w-3 text-[#8B95A5]"/>{p.location}</> : "Not listed"}</span></TableCell>
                 <TableCell><Badge variant={p.role==="admin"?"admin":"alumni"} className="rounded-none text-[11px] uppercase tracking-wide">{p.role}</Badge></TableCell>
-                <TableCell className="text-xs tabular-nums text-[#4B5563]">{p.createdAt?.toDate?.().toLocaleDateString?.("en-IN",{day:"numeric", month:"short", year:"numeric"}) || "—"}</TableCell>
+                <TableCell className="text-xs tabular-nums text-[#4B5563]">{p.createdAt?.toDate?.().toLocaleDateString?.("en-IN",{day:"numeric", month:"short", year:"numeric"}) || "Not listed"}</TableCell>
                 <TableCell><Link href={`/profile/${p.uid}`} className="text-xs font-semibold uppercase tracking-wide text-[#1B3A5C] underline underline-offset-4 hover:text-[#14304E]">View</Link></TableCell>
               </TableRow>
             )})}

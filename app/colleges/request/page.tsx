@@ -75,7 +75,7 @@ export default function CollegeRequestPage() {
         <div className="container py-12">
           <Card className="max-w-2xl mx-auto p-8 rounded-none border-l-[3px] border-l-[#1F7A4A] text-center">
             <div className="mx-auto h-12 w-12 border border-[#B7E0C5] bg-[#E6F4EA] grid place-items-center"><ShieldCheck className="h-6 w-6 text-[#1F7A4A]" /></div>
-            <h1 className="mt-4 font-heading text-2xl font-bold text-[#1A2332]">Request received — under verification</h1>
+            <h1 className="mt-4 font-heading text-2xl font-bold text-[#1A2332]">Request received. Under verification.</h1>
             <p className="mt-2 text-sm leading-relaxed text-[#4B5563] max-w-[60ch] mx-auto">Your college registration has been queued for verification by the Directorate of Technical Education, Punjab. You will receive an email at <span className="font-medium text-[#1A2332]">{form.authorityEmail || "your official email"}</span> once approved. Approved colleges appear instantly in the <Link href="/colleges" className="underline text-[#1B3A5C]">colleges list</Link> and in the sign-up form.</p>
             <div className="mt-6 flex justify-center gap-3">
               <Button asChild className="rounded-none"><Link href="/colleges">Back to colleges</Link></Button>
@@ -93,7 +93,7 @@ export default function CollegeRequestPage() {
         <div className="container py-4">
           <Link href="/colleges" className="inline-flex items-center gap-1 text-xs font-medium tracking-wide uppercase text-[#4B5563] hover:text-[#1B3A5C] underline underline-offset-4"><ArrowLeft className="h-3 w-3"/> Back to colleges</Link>
           <div className="mt-3 max-w-3xl">
-            <h1 className="font-heading text-[26px] font-bold tracking-tight text-[#1A2332]">Register your college — official authority</h1>
+            <h1 className="font-heading text-[26px] font-bold tracking-tight text-[#1A2332]">Register your college</h1>
             <p className="text-sm leading-relaxed text-[#4B5563] mt-1">If your institution is not in the 17 government / NIT / IIT colleges listed, the Principal, Registrar, or Director can request inclusion. Requests are verified via official email and AICTE code before the college appears for alumni sign-up.</p>
           </div>
         </div>
@@ -133,7 +133,7 @@ export default function CollegeRequestPage() {
               </div>
               <div className="space-y-1">
                 <Label>Full address <span className="text-[#C0392B]">*</span></Label>
-                <Textarea value={form.address} onChange={e=>setForm({...form, address:e.target.value})} placeholder="Street, Village/Post, District, PIN — as on AICTE letter" className="rounded-none min-h-[80px]" />
+                <Textarea value={form.address} onChange={e=>setForm({...form, address:e.target.value})} placeholder="Street, Village/Post, District, PIN as on AICTE letter" className="rounded-none min-h-[80px]" />
                 {errors.address && <p className="text-xs text-[#C0392B]">{errors.address}</p>}
               </div>
               <div className="grid sm:grid-cols-2 gap-4">

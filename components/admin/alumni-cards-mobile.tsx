@@ -12,7 +12,7 @@ export function AlumniCardsMobile({ profiles }: { profiles: AlumniProfile[] }) {
       {profiles.map(p=> {
         const col = (p as unknown as { college?: string }).college || "";
         const colOther = (p as unknown as { collegeOther?: string }).collegeOther || "";
-        const displayCol = col==="Other" && colOther ? colOther : col ? collegeShortName(col) : "—";
+        const displayCol = col==="Other" && colOther ? colOther : col ? collegeShortName(col) : "Not listed";
         return (
         <Card key={p.uid} className="p-3 border-l-[3px] border-l-[#C9A86A] rounded-none">
           <div className="flex gap-3">
@@ -22,8 +22,8 @@ export function AlumniCardsMobile({ profiles }: { profiles: AlumniProfile[] }) {
               <p className="text-xs tabular-nums text-[#4B5563] truncate">{p.email}</p>
               <p className="mt-1 flex items-center gap-1 text-xs text-[#1B3A5C] border border-[#E8EDF3] bg-[#F8FAFC] px-2 py-1 truncate"><GraduationCap className="h-3 w-3 shrink-0"/>{displayCol}</p>
               <div className="mt-2 flex gap-1.5"><Badge variant="batch" className="rounded-none text-[11px]">{p.batch}</Badge><Badge variant="generic" className="rounded-none text-[11px]">{p.branch}</Badge></div>
-              <p className="mt-2 text-sm text-[#1A2332]">{p.company || "—"}</p>
-              <p className="flex items-center gap-1 text-xs text-[#4B5563]"><MapPin className="h-3 w-3 text-[#8B95A5]"/>{p.location || "—"}</p>
+              <p className="mt-2 text-sm text-[#1A2332]">{p.company || "Not listed"}</p>
+              <p className="flex items-center gap-1 text-xs text-[#4B5563]"><MapPin className="h-3 w-3 text-[#8B95A5]"/>{p.location || "Not listed"}</p>
             </div>
           </div>
           <Link href={`/profile/${p.uid}`} className="mt-3 inline-block text-xs font-semibold uppercase tracking-wide text-[#1B3A5C] underline underline-offset-4">View record</Link>

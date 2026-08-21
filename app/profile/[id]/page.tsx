@@ -85,7 +85,7 @@ export default function ProfilePage() {
   }
 
   const college = (profile as unknown as { college?: string }).college || "";
-  const displayCollege = college || "—";
+  const displayCollege = college || "Not listed";
 
   return (
     <div className="min-h-screen bg-[#F8F7F5]">
@@ -126,7 +126,7 @@ export default function ProfilePage() {
             <Card className="p-5 h-fit rounded-none border-l-[3px] border-l-[#C9A86A]">
               <p className="text-xs font-semibold uppercase tracking-wide text-[#4B5563]">About</p>
               <p className="mt-2 text-sm leading-relaxed text-[#1A2332]">Batch {profile.batch}, {profile.branch} at {collegeShortName(displayCollege)}. Verified by the institution.</p>
-              <p className="mt-3 inline-flex items-center gap-1 text-xs tabular-nums text-[#4B5563] border border-[#E2DDD6] bg-[#F8F7F5] px-2 py-1"><Calendar className="h-3 w-3"/> Member since {profile.createdAt?.toDate?.().toLocaleDateString?.("en-IN",{month:"short", year:"numeric"}) || "—"}</p>
+              <p className="mt-3 inline-flex items-center gap-1 text-xs tabular-nums text-[#4B5563] border border-[#E2DDD6] bg-[#F8F7F5] px-2 py-1"><Calendar className="h-3 w-3"/> Member since {profile.createdAt?.toDate?.().toLocaleDateString?.("en-IN",{month:"short", year:"numeric"}) || "recently"}</p>
             </Card>
             <Card className="md:col-span-2 p-5 rounded-none">
               <p className="text-xs font-semibold uppercase tracking-wide text-[#4B5563]">Details</p>
@@ -135,10 +135,10 @@ export default function ProfilePage() {
                   ["College", displayCollege],
                   ["Batch", profile.batch],
                   ["Branch", profile.branch],
-                  ["Company", profile.company || "—"],
-                  ["Location", profile.location || "—"],
-                  ["Contact", profile.contact || "—"],
-                  ["LinkedIn", profile.linkedinUrl ? profile.linkedinUrl : "—"],
+                  ["Company", profile.company || "Not listed"],
+                  ["Location", profile.location || "Not listed"],
+                  ["Contact", profile.contact || "Not listed"],
+                  ["LinkedIn", profile.linkedinUrl ? profile.linkedinUrl : "Not listed"],
                 ].map(([k,v])=>(
                   <div key={k} className="flex justify-between sm:block py-3 border-b sm:border-b-0 border-[#F1EFEA]">
                     <dt className="text-xs uppercase tracking-wide text-[#8B95A5]">{k}</dt>

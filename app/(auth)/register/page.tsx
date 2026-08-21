@@ -56,7 +56,7 @@ export default function RegisterPage() {
         photoURL: "",
         role: "alumni",
       });
-      toast({ title: "Profile created — welcome!", description: "Your profile is now discoverable in the directory.", variant: "success" });
+      toast({ title: "Profile created", description: "Your profile now appears in the directory. Batchmates can find you by name or company.", variant: "success" });
       router.push("/directory");
     } catch (e: any) {
       const code = e?.code || "";

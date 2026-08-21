@@ -40,7 +40,8 @@ export function PostComposer({ onCreated }: { onCreated?: ()=>void }) {
     <Card className="rounded-none border-l-[3px] border-l-[#1B3A5C] p-4 sm:p-5">
       <div className="flex items-center gap-2 mb-3">
         <Avatar className="h-8 w-8 rounded-none border border-[#E2DDD6]"><AvatarFallback className="bg-[#1B3A5C] text-white text-xs rounded-none">{profile.name.slice(0,2).toUpperCase()}</AvatarFallback></Avatar>
-        <span className="text-sm font-medium text-[#1A2332]">Create a post — admin only</span>
+        <span className="text-sm font-medium text-[#1A2332]">Create a post</span>
+        <span className="text-xs text-[#8B95A5] border border-[#E2DDD6] px-2 py-0.5">Admin only</span>
         <span className="ml-auto text-xs text-[#8B95A5] border border-[#E2DDD6] px-2 py-0.5">Verified</span>
       </div>
       <Textarea placeholder="Share an announcement, job opening, or event…" value={content} onChange={e=>setContent(e.target.value)} className="min-h-[96px] rounded-none" aria-label="Post content" />

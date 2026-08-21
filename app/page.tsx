@@ -13,7 +13,7 @@ export default function LandingPage() {
             {/* gov crest + label — not a kicker, but provenance bar */}
             <div className="inline-flex items-center gap-3 border border-white/15 bg-white/[0.06] px-3 py-2">
               <span className="h-2 w-2 rounded-full bg-[#C9A86A]" aria-hidden />
-              <span className="text-[11px] font-semibold tracking-[0.14em] text-white/85 uppercase">Government of Punjab — Smart Education • SIH25019</span>
+              <span className="text-[11px] font-semibold tracking-[0.14em] text-white/85 uppercase">Government of Punjab · Smart Education · SIH25019</span>
             </div>
 
             <h1 className="mt-6 font-heading text-[34px] sm:text-[42px] lg:text-[52px] font-[800] leading-[0.95] tracking-[-0.03em] text-white max-w-[18ch] text-balance">
@@ -58,7 +58,7 @@ export default function LandingPage() {
                   <div className="flex items-center gap-3 min-w-0">
                     <div className="h-9 w-9 rounded-full bg-[#1B3A5C] text-white grid place-items-center text-[11px] font-bold">AS</div>
                     <div className="min-w-0">
-                      <p className="text-sm font-semibold text-[#1A2332] leading-none">Arjun Sharma — CSE 2021</p>
+                      <p className="text-sm font-semibold text-[#1A2332] leading-none">Arjun Sharma · CSE 2021</p>
                       <p className="text-xs text-[#4B5563]">Software Engineer, Infosys • Bengaluru</p>
                     </div>
                   </div>
@@ -69,7 +69,7 @@ export default function LandingPage() {
                   <div className="py-2"><p className="text-xs text-[#8B95A5]">Branch</p><p className="text-sm font-semibold text-[#1A2332]">CSE</p></div>
                   <div className="py-2"><p className="text-xs text-[#8B95A5]">Location</p><p className="text-sm font-semibold text-[#1A2332]">Bengaluru</p></div>
                 </div>
-                <p className="mt-3 text-xs leading-relaxed text-[#4B5563]">Search “Priya Kaur — ECE 2020” and see this record in under a second. No spreadsheet, no email chain.</p>
+                <p className="mt-3 text-xs leading-relaxed text-[#4B5563]">Search “Priya Kaur, ECE 2020” and see this record in under a second. No spreadsheet, no email chain.</p>
               </div>
             </div>
             <p className="mt-2 text-[11px] text-[#8B95A5]">Preview from live directory. Photos are illustrative; records are real.</p>
@@ -85,7 +85,7 @@ export default function LandingPage() {
               <h2 className="font-heading text-[30px] lg:text-[36px] font-bold tracking-[-0.02em] leading-none text-[#1A2332] text-balance">From scattered sheets to living network.</h2>
               <p className="mt-3 max-w-[42ch] text-sm leading-relaxed text-[#4B5563]">Institutions keep the record. Alumni keep it current. One source of truth replaces email threads and outdated spreadsheets.</p>
               <div className="mt-6 hidden lg:block h-px w-full bg-[#E2DDD6]" aria-hidden />
-              <p className="mt-3 hidden lg:block text-xs text-[#8B95A5]">Public-sector service — accessibility and trust over trend.</p>
+              <p className="mt-3 hidden lg:block text-xs text-[#8B95A5]">Public-sector service. Accessibility and trust over trend.</p>
             </div>
 
             <div className="divide-y divide-[#E2DDD6] border-y border-[#E2DDD6] bg-white">
@@ -179,7 +179,7 @@ export default function LandingPage() {
             </div>
             <div className="grid lg:grid-cols-[auto_1fr_auto] gap-3 border-t border-[#E2DDD6] bg-[#F8F7F5] px-4 sm:px-6 py-3 text-xs text-[#4B5563]">
               <span className="font-medium text-[#1A2332]">Directorate of Technical Education, Punjab</span>
-              <span className="hidden lg:block text-[#C9C4BC]">—</span>
+              <span className="hidden lg:block text-[#C9C4BC]">·</span>
               <span>Replaces scattered spreadsheets with a single, auditable source of truth.</span>
             </div>
           </div>

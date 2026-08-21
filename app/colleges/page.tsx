@@ -44,14 +44,14 @@ export default function CollegesPage() {
             <Link href="/" className="hover:text-[#1B3A5C] underline underline-offset-4">Home</Link> <span className="mx-1 text-[#C9C4BC]">/</span> <span className="text-[#1A2332] font-medium">Colleges</span>
           </nav>
           <div className="mt-3">
-            <h1 className="font-heading text-[28px] font-bold tracking-tight text-[#1A2332]">Government engineering colleges — Punjab</h1>
-            <p className="text-sm text-[#4B5563] max-w-[72ch]">DTE Punjab colleges plus all NIT, IIT, and centrally-funded institutes in Punjab — NIT Jalandhar, IIT Ropar, PEC Chandigarh, SLIET Longowal. No “Other” — every Punjab government engineering admission maps to a registered college.</p>
+            <h1 className="font-heading text-[28px] font-bold tracking-tight text-[#1A2332]">Government engineering colleges in Punjab</h1>
+            <p className="text-sm text-[#4B5563] max-w-[72ch]">DTE Punjab colleges plus NIT, IIT and centrally funded institutes in Punjab: NIT Jalandhar, IIT Ropar, PEC Chandigarh and SLIET Longowal. No “Other” needed. Every Punjab government engineering admission maps to a registered college.</p>
           </div>
 
           <div className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-3">
             <Card className="p-4 border-l-[3px] border-l-[#1B3A5C] rounded-none"><p className="text-xs uppercase tracking-wide text-[#4B5563]"> Institutions</p><p className="font-heading text-[24px] font-bold leading-none tabular-nums text-[#1B3A5C] mt-1">{totalColleges}</p></Card>
-            <Card className="p-4 border-l-[3px] border-l-[#C9A86A] rounded-none"><p className="text-xs uppercase tracking-wide text-[#4B5563]">With alumni</p><p className="font-heading text-[24px] font-bold leading-none tabular-nums text-[#1B3A5C] mt-1">{loadingCounts ? "—" : withAlumni}</p></Card>
-            <Card className="p-4 border-l-[3px] border-l-[#2E7D6F] rounded-none"><p className="text-xs uppercase tracking-wide text-[#4B5563]">Total records</p><p className="font-heading text-[24px] font-bold leading-none tabular-nums text-[#1B3A5C] mt-1">{loadingCounts ? "—" : totalAlumni}</p></Card>
+            <Card className="p-4 border-l-[3px] border-l-[#C9A86A] rounded-none"><p className="text-xs uppercase tracking-wide text-[#4B5563]">With alumni</p><p className="font-heading text-[24px] font-bold leading-none tabular-nums text-[#1B3A5C] mt-1">{loadingCounts ? "…" : withAlumni}</p></Card>
+            <Card className="p-4 border-l-[3px] border-l-[#2E7D6F] rounded-none"><p className="text-xs uppercase tracking-wide text-[#4B5563]">Total records</p><p className="font-heading text-[24px] font-bold leading-none tabular-nums text-[#1B3A5C] mt-1">{loadingCounts ? "…" : totalAlumni}</p></Card>
           </div>
 
           <div className="mt-4 border border-[#C9A86A] bg-[#FDF6E3] p-3 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
@@ -88,7 +88,7 @@ export default function CollegesPage() {
                   <span className={`text-[10px] font-semibold tracking-wide uppercase px-2 py-1 ${catColor}`}>{cat}</span>
                 </div>
                 <h3 className="mt-3 text-sm font-semibold leading-snug text-[#1A2332]">{col}</h3>
-                <p className="mt-1 text-xs text-[#4B5563] flex items-center gap-1"><Building2 className="h-3 w-3" />{cat==="IIT" ? "Ministry of Education, GoI — Rupnagar" : cat==="NIT" ? "Ministry of Education, GoI — Jalandhar" : "Government • DTE Punjab"}</p>
+                <p className="mt-1 text-xs text-[#4B5563] flex items-center gap-1"><Building2 className="h-3 w-3" />{cat==="IIT" ? "Ministry of Education, GoI, Rupnagar" : cat==="NIT" ? "Ministry of Education, GoI, Jalandhar" : "Government · DTE Punjab"}</p>
                 <div className="mt-2">
                   <Badge variant={count>0 ? "alumni" : "generic"} className="rounded-none text-[11px] tabular-nums">{loadingCounts ? "…" : `${count} alumni`}</Badge>
                 </div>
@@ -102,7 +102,7 @@ export default function CollegesPage() {
           })}
         </div>
         {filtered.length===0 && <p className="py-12 text-center text-sm text-[#4B5563] border border-dashed border-[#C9C4BC] bg-white mt-4">No colleges match “{q}”. Try “IIT”, “NIT” or “PEC”.</p>}
-        <p className="mt-6 text-xs leading-relaxed text-[#8B95A5] border-t border-[#E2DDD6] pt-3 max-w-[80ch]">All NIT (Jalandhar), IIT (Ropar), and DTE Punjab government engineering colleges are registered. There is no IIIT inside Punjab state — the nearest IIIT is IIIT Una, Himachal Pradesh, so no IIIT appears above. If your Punjab admission college is missing, ask your Principal/Registrar to <a href="/colleges/request" className="underline text-[#1B3A5C]">register the college</a>.</p>
+        <p className="mt-6 text-xs leading-relaxed text-[#8B95A5] border-t border-[#E2DDD6] pt-3 max-w-[80ch]">All NIT (Jalandhar), IIT (Ropar) and DTE Punjab government engineering colleges are registered. There is no IIIT inside Punjab. The nearest is IIIT Una, Himachal Pradesh, so no IIIT appears above. If your Punjab admission college is missing, ask your Principal or Registrar to <a href="/colleges/request" className="underline text-[#1B3A5C]">register the college</a>.</p>
       </div>
     </div>
   );

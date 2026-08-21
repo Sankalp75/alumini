@@ -91,7 +91,7 @@ export default function AdminPage() {
 
         {pending.length>0 && (
           <Card className="p-4 mb-6 rounded-none border-l-[3px] border-l-[#C9A86A]">
-            <h2 className="font-semibold text-[#1A2332] flex items-center gap-2"><Building2 className="h-4 w-4" /> College registration requests — pending verification</h2>
+            <h2 className="font-semibold text-[#1A2332] flex items-center gap-2"><Building2 className="h-4 w-4" /> College registration requests: pending verification</h2>
             <p className="text-xs text-[#4B5563]">Verify via official email + AICTE/DTE. Approve to add to sign-up list.</p>
             <div className="mt-4 space-y-3">
               {pending.map(r=> (
@@ -99,7 +99,7 @@ export default function AdminPage() {
                   <div className="min-w-0">
                     <p className="font-semibold text-sm text-[#1A2332]">{r.collegeName}</p>
                     <p className="text-xs text-[#4B5563]">{r.affiliation} • {r.district} • {r.address}</p>
-                    <p className="text-xs text-[#4B5563] mt-1">{r.authorityDesignation} {r.authorityName} — {r.authorityEmail} • {r.authorityPhone} {r.aicteCode && `• AICTE ${r.aicteCode}`}</p>
+                    <p className="text-xs text-[#4B5563] mt-1">{r.authorityDesignation} {r.authorityName} · {r.authorityEmail} · {r.authorityPhone} {r.aicteCode && `· AICTE ${r.aicteCode}`}</p>
                     {r.officialWebsite && <a href={r.officialWebsite} target="_blank" className="text-xs text-[#1B3A5C] underline">{r.officialWebsite}</a>}
                   </div>
                   <div className="flex gap-2 shrink-0">

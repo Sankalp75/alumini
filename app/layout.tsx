@@ -25,11 +25,11 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Alumni Connect — Government of Punjab | SIH25019",
-  description: "Centralized alumni data management and engagement platform for Government of Punjab — Smart Education. Find batchmates, stay current, never lose touch.",
+  title: "Alumni Connect | Government of Punjab | SIH25019",
+  description: "Centralized alumni data for Government of Punjab (Smart Education). Find batchmates, stay current, never lose touch.",
   openGraph: {
-    title: "Alumni Connect — Government of Punjab",
-    description: "Your institution, still your home. A permanent, trusted home for every graduate.",
+    title: "Alumni Connect | Government of Punjab",
+    description: "Your institution, still your home. A permanent home for every graduate.",
     type: "website",
   },
 };
