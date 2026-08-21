@@ -1,36 +1,27 @@
-# Alumni Connect — Centralized Alumni Data Management & Engagement Platform
+# Alumni Connect
 
-> Prototype built for **Smart India Hackathon 2026 — Practice Round**
-> Problem Statement ID: **SIH25019** | PS: **SIH25017** | Organization: Government of Punjab | Category: Software | Theme: Smart Education
+> **Centralized Alumni Data Management & Engagement Platform**
+> Built for **Smart India Hackathon 2026 — Practice Round** · PS ID: **SIH25019** · Government of Punjab · Theme: Smart Education
 
----
-
-## 📌 Problem Statement
-
-Educational institutions struggle to maintain updated records of their alumni and lack a centralized system for alumni engagement. This leads to lost connections, missed mentorship and job opportunities, and poor institutional-alumni relationships.
-
-**Alumni Connect** solves this by providing a single digital platform where alumni can register, keep their profiles updated, search/reconnect with batchmates, and stay engaged through announcements, job postings, or events — while institutions get a searchable, centralized alumni database.
+Alumni Connect replaces scattered institutional spreadsheets with a live, searchable alumni directory and engagement feed — owned by the institution, kept current by alumni themselves.
 
 ---
 
 ## ✨ Features
 
-#Post product feature:
--Nearby alumini as per the linkedin working place.
+- 🔐 **Authentication** — secure email/password sign-up and sign-in with role-based routing (alumni → directory, admin → dashboard)
+- 👤 **Profile Management** — alumni create and update their details: batch, branch, company, location, contact, LinkedIn
+- 🔍 **Searchable Directory** — instant search plus batch and branch filters across the alumni card grid
+- 📢 **Engagement Feed** — announcements, job postings, and events posted by admins, newest first
+- 🛠️ **Admin Dashboard** — full alumni table with search, sorting, pagination, role badges, and CSV export
+- 🏛️ **College Pages** — institutional overview and college registration requests
 
-### Core (MVP — built in this prototype)
-- 🔐 **Alumni Registration & Login** — secure sign-up/sign-in using email authentication
-- 👤 **Profile Management** — alumni can create and update their details (name, batch, branch, current company, location, contact, LinkedIn)
-- 🔍 **Searchable Alumni Directory** — search and filter by name, graduation batch, or branch
-- 📢 **Engagement Feed** — a simple announcement/job-posting board visible to all registered alumni
-- 🛠️ **Admin View** — institution admins can view all alumni records in one place
+### Roadmap
 
-### Planned / Future Scope
-- 🤝 Mentorship matching between alumni and current students
-- 💼 Job/internship board with application tracking
-- 📅 Event RSVP and reunion management
-- 📊 Analytics dashboard for institutions (batch-wise placement stats, engagement metrics)
-- 📱 Mobile app version
+- 🤝 Mentorship matching between alumni and students
+- 💼 Job board with application tracking
+- 📅 Event RSVPs and reunion management
+- 📊 Institution analytics (batch-wise placement stats, engagement metrics)
 
 ---
 
@@ -38,13 +29,69 @@ Educational institutions struggle to maintain updated records of their alumni an
 
 | Layer | Technology |
 |---|---|
-| Frontend | HTML, CSS, JavaScript (or React, if used) |
-| Styling | Bootstrap / Tailwind CSS |
-| Backend & Database | Firebase (Authentication + Firestore) |
-| Hosting | Firebase Hosting / Vercel / Netlify |
-| Version Control | Git & GitHub |
+| Framework | [Next.js 14](https://nextjs.org/) (App Router) + React 18 + TypeScript |
+| Styling | Tailwind CSS v3 + [shadcn/ui](https://ui.shadcn.com/) |
+| Backend | Firebase — Authentication (Email/Password) + Firestore |
+| Forms | React Hook Form + Zod validation |
+| Icons | Lucide React |
 
-*(Update this table with your team's actual final stack before submission.)*
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js 18+
+- A free [Firebase](https://firebase.google.com/) project
+
+### Setup
+
+1. **Clone and install**
+
+   ```bash
+   git clone https://github.com/<your-username>/alumni-connect.git
+   cd alumni-connect
+   npm install
+   ```
+
+2. **Configure Firebase**
+
+   - Create a project in the [Firebase Console](https://console.firebase.google.com/)
+   - Enable **Authentication → Email/Password**
+   - Enable **Firestore Database** and deploy the rules from [`firestore.rules`](./firestore.rules)
+
+3. **Add environment variables**
+
+   ```bash
+   cp .env.local.example .env.local
+   ```
+
+   Fill in your Firebase web app config:
+
+   ```env
+   NEXT_PUBLIC_FIREBASE_API_KEY=...
+   NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=...
+   NEXT_PUBLIC_FIREBASE_PROJECT_ID=...
+   NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=...
+   NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=...
+   NEXT_PUBLIC_FIREBASE_APP_ID=...
+   ```
+
+4. **Seed demo data** (20 dummy alumni records for demos/testing)
+
+   ```bash
+   npm run seed
+   ```
+
+5. **Run locally**
+
+   ```bash
+   npm run dev
+   ```
+
+   Open [http://localhost:3000](http://localhost:3000).
+
+> **Making an admin:** register normally, then set `role: "admin"` on that user's document in `alumni_profiles/{uid}` via the Firestore console. The feed composer and `/admin` route unlock for that account.
 
 ---
 
@@ -52,69 +99,56 @@ Educational institutions struggle to maintain updated records of their alumni an
 
 ```
 alumni-connect/
-├── index.html              # Landing page
-├── register.html           # Alumni registration page
-├── login.html               # Login page
-├── directory.html           # Searchable alumni directory
-├── profile.html              # Profile view/edit page
-├── feed.html                  # Announcements/engagement feed
-├── admin.html                # Admin dashboard
-├── /css
-│   └── style.css
-├── /js
-│   ├── firebase-config.js    # Firebase project configuration
-│   ├── auth.js                 # Login/register logic
-│   ├── directory.js            # Search & filter logic
-│   └── feed.js                  # Feed post/read logic
-├── /assets
-│   └── images/
-└── README.md
+├── app/                    # Next.js App Router pages
+│   ├── page.tsx            # Landing page (/)
+│   ├── (auth)/             # /login, /register
+│   ├── directory/          # Searchable alumni directory
+│   ├── profile/[id]/       # Profile view/edit
+│   ├── feed/               # Engagement feed (+ admin composer)
+│   ├── admin/              # Admin dashboard (admin-only)
+│   └── colleges/           # College pages + registration request
+├── components/
+│   ├── ui/                 # shadcn/ui primitives
+│   ├── layout/             # Navbar, footer, auth provider
+│   ├── alumni/             # Cards, grid, filters, forms
+│   ├── feed/               # Post cards, composer, list
+│   └── admin/              # Table, CSV export
+├── lib/                    # Firebase init, Firestore helpers, validators, seed
+├── hooks/                  # Auth hooks, debounce
+├── types/                  # Shared TypeScript types
+└── firestore.rules         # Security rules
 ```
-
-*(Adjust this to match your actual folder layout.)*
 
 ---
 
-## 🚀 Getting Started
+## 🔒 Data Model & Security
 
-### Prerequisites
-- A [Firebase](https://firebase.google.com/) account (free tier is enough)
-- [Node.js](https://nodejs.org/) installed (if using React/build tools)
-- Git installed
+Two Firestore collections:
 
-### Setup Instructions
+| Collection | Doc ID | Access |
+|---|---|---|
+| `alumni_profiles` | Auth UID (one-to-one) | Signed-in read; owner writes own doc (role immutable); admin writes any |
+| `feed_posts` | Auto-ID | Signed-in read; **admin-only create** |
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/<your-username>/alumni-connect.git
-   cd alumni-connect
-   ```
+Rules enforce all of this server-side — see [`firestore.rules`](./firestore.rules). Users cannot self-elevate to admin; the role is set manually per institution.
 
-2. **Set up Firebase**
-   - Create a new project on the [Firebase Console](https://console.firebase.google.com/)
-   - Enable **Authentication** (Email/Password)
-   - Enable **Firestore Database**
-   - Copy your Firebase config keys into `js/firebase-config.js`:
-     ```javascript
-     const firebaseConfig = {
-       apiKey: "YOUR_API_KEY",
-       authDomain: "YOUR_PROJECT.firebaseapp.com",
-       projectId: "YOUR_PROJECT_ID",
-       storageBucket: "YOUR_PROJECT.appspot.com",
-       messagingSenderId: "YOUR_SENDER_ID",
-       appId: "YOUR_APP_ID"
-     };
-     ```
+---
 
-3. **Run locally**
-   - Simply open `index.html` in a browser, or
-   - Use the Live Server extension in VS Code for hot-reloading
+## 📜 Available Scripts
 
-4. **(If using React)**
-   ```bash
-   npm install
-   npm start
-   ```
+| Command | Description |
+|---|---|
+| `npm run dev` | Start dev server at `localhost:3000` |
+| `npm run build` | Production build |
+| `npm start` | Serve production build |
+| `npm run lint` | ESLint check |
+| `npm run seed` | Seed 20 demo alumni records into Firestore |
+
+---
+
+## 🖼️ Screenshots
+
+_Add screenshots of the working prototype here before submission._
 
 ---
 
@@ -122,43 +156,14 @@ alumni-connect/
 
 | Name | Role |
 |---|---|
-| _Add name_ | Team Lead / Auth & Registration |
-| _Add name_ | Frontend — Directory & Search |
-| _Add name_ | Frontend — Feed & Admin Dashboard |
-| _Add name_ | Backend / Firebase Setup |
+| _Add name_ | Team Lead |
+| _Add name_ | Frontend |
+| _Add name_ | Backend / Firebase |
 | _Add name_ | UI/UX Design |
 | _Add name_ | Testing & Presentation |
 
 ---
 
-## 🖼️ Screenshots
-
-_Add screenshots of your working prototype here before submission._
-
-```
-![Homepage](./assets/screenshots/home.png)
-![Directory](./assets/screenshots/directory.png)
-```
-
----
-
-## 🎯 How This Solves the Problem
-
-- Replaces scattered spreadsheets/manual records with a **live, centralized database**
-- Gives alumni a **self-service** way to keep their own information current
-- Makes it easy for institutions and alumni to **reconnect and engage** through a shared feed
-- Built to be **extendable** — mentorship, job boards, and events can be layered on top of the same data model
-
----
-
 ## 📄 License
 
-This project was built for educational/hackathon purposes as part of Smart India Hackathon 2026 practice.
-
----
-
-## 🙏 Acknowledgements
-
-- Smart India Hackathon 2025/2026 for the problem statement
-- Government of Punjab for defining the challenge
-- Firebase/Supabase documentation for backend guidance
+Built for educational/hackathon purposes as part of Smart India Hackathon 2026.
