@@ -1,8 +1,0 @@
-{
-  "name": "AlumniConnect",
-  "description": "A cinematic alumni networking platform featuring interactive global network visualization, alumni directory & profiles, mentorship programs, dynamic dashboards, and event management.",
-  "requestFramePermissions": [],
-  "majorCapabilities": [
-    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
-  ]
-}

@@ -1,0 +1,66 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 36 33% 97%;
+    --foreground: 218 32% 15%;
+    --card: 0 0% 100%;
+    --card-foreground: 218 32% 15%;
+    --primary: 212 54% 23%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 36 33% 94%;
+    --secondary-foreground: 218 32% 15%;
+    --muted: 35 18% 92%;
+    --muted-foreground: 218 12% 48%;
+    --accent: 168 46% 34%;
+    --accent-foreground: 0 0% 100%;
+    --border: 34 14% 87%;
+    --input: 34 14% 87%;
+    --ring: 168 46% 34%;
+    --radius: 0.75rem;
+  }
+}
+@layer base {
+  * { @apply border-border; }
+  body { @apply bg-background text-foreground font-body antialiased; }
+  h1,h2,h3,h4 { @apply font-heading; }
+  /* measure: 65ch for body, headings balanced */
+  p { max-width: 65ch; }
+  h1,h2 { text-wrap: balance; }
+}
+
+/* Shadows — institutional, offset + blur, never zero-offset halo */
+:root {
+  --shadow-sm: 0 1px 2px rgba(26,35,50,0.05);
+  --shadow: 0 1px 3px rgba(26,35,50,0.07), 0 1px 2px rgba(26,35,50,0.06);
+  --shadow-md: 0 4px 6px rgba(26,35,50,0.07), 0 2px 4px rgba(26,35,50,0.06);
+  --shadow-lg: 0 10px 15px rgba(26,35,50,0.08), 0 4px 6px rgba(26,35,50,0.06);
+  --shadow-xl: 0 20px 25px rgba(26,35,50,0.10), 0 10px 10px rgba(26,35,50,0.04);
+  --shadow-brand: 0 4px 14px rgba(27,58,92,0.22), 0 2px 6px rgba(27,58,92,0.16);
+}
+
+/* Motion — one authored moment (hero), exponential ease, no scattered entrances */
+@keyframes fade-in { 0% { opacity: 0 } 100% { opacity: 1 } }
+@keyframes slide-up { 0% { opacity: 0; transform: translateY(8px)} 100% { opacity: 1; transform: translateY(0)} }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+}
+
+/* Browser surfaces — cheap signal of craft */
+::selection { background: #1B3A5C; color: white; }
+::-moz-selection { background: #1B3A5C; color: white; }
+* { caret-color: #1B3A5C; }
+:focus-visible { outline: 2px solid #2E7D6F; outline-offset: 2px; }
+::marker { color: #C9A86A; }
+input, textarea, select { accent-color: #1B3A5C; }
+
+/* Scrollbar — tinted, not default gray */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-thumb { background: #C9C4BC; border-radius: 9999px; }
+::-webkit-scrollbar-thumb:hover { background: #1B3A5C; }
+::-webkit-scrollbar-track { background: #F8F7F5; }
+
+/* Tabular numerals for admin/table */
+.tabular-nums { font-variant-numeric: tabular-nums; }
