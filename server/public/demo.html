@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AlumniConnect API — Local Test</title>
+  <style>
+    :root {
+      --bg: #0b1220;
+      --card: #121a2b;
+      --line: rgba(255,255,255,0.1);
+      --text: #e8eefc;
+      --muted: #93a0b8;
+      --ok: #34d399;
+      --bad: #f87171;
+      --accent: #3b82f6;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", system-ui, sans-serif;
+      background: radial-gradient(1200px 600px at 10% -10%, #1e3a5f 0%, var(--bg) 55%);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 32px 20px 48px;
+    }
+    .wrap { max-width: 880px; margin: 0 auto; }
+    h1 { margin: 0 0 8px; font-size: 1.75rem; letter-spacing: -0.02em; }
+    .sub { color: var(--muted); margin-bottom: 24px; line-height: 1.5; }
+    .card {
+      background: color-mix(in srgb, var(--card) 92%, transparent);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 16px;
+      backdrop-filter: blur(8px);
+    }
+    .row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+    button {
+      background: var(--accent);
+      color: white;
+      border: 0;
+      border-radius: 10px;
+      padding: 12px 18px;
+      font-weight: 650;
+      cursor: pointer;
+      font-size: 0.95rem;
+    }
+    button:disabled { opacity: 0.55; cursor: wait; }
+    button.secondary { background: #1f2937; border: 1px solid var(--line); }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: #64748b; }
+    .dot.ok { background: var(--ok); box-shadow: 0 0 10px var(--ok); }
+    .dot.bad { background: var(--bad); box-shadow: 0 0 10px var(--bad); }
+    #summary {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-top: 8px;
+    }
+    #log { list-style: none; padding: 0; margin: 0; }
+    #log li {
+      display: grid;
+      grid-template-columns: 64px 1fr;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+      font-size: 0.92rem;
+    }
+    #log li:last-child { border-bottom: 0; }
+    .tag {
+      font-weight: 700;
+      font-size: 0.75rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .tag.pass { color: var(--ok); }
+    .tag.fail { color: var(--bad); }
+    .meta { color: var(--muted); font-size: 0.85rem; margin-top: 4px; }
+    code { background: #0a0f1a; padding: 2px 6px; border-radius: 6px; font-size: 0.85em; }
+    a { color: #93c5fd; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>AlumniConnect Express API — Live Local Test</h1>
+    <p class="sub">
+      This page talks to your local backend at <code>http://localhost:4000</code>.
+      It does <strong>not</strong> use Firebase. The hosted UI at
+      <a href="https://alumniconnect-1.ai.studio/" target="_blank" rel="noreferrer">alumniconnect-1.ai.studio</a>
+      is the mockup frontend (separate from this API).
+    </p>
+
+    <div class="card">
+      <div class="row">
+        <button id="runBtn" type="button">Run live API tests</button>
+        <button class="secondary" id="healthBtn" type="button">Ping health only</button>
+        <span class="pill"><span class="dot" id="statusDot"></span><span id="statusText">Idle</span></span>
+      </div>
+      <div id="summary"></div>
+    </div>
+
+    <div class="card">
+      <h2 style="margin:0 0 12px;font-size:1.05rem;">Results</h2>
+      <ul id="log"></ul>
+    </div>
+  </div>
+
+  <script>
+    const API = window.location.origin.includes("4000")
+      ? window.location.origin
+      : "http://localhost:4000";
+
+    const logEl = document.getElementById("log");
+    const summaryEl = document.getElementById("summary");
+    const statusDot = document.getElementById("statusDot");
+    const statusText = document.getElementById("statusText");
+    const runBtn = document.getElementById("runBtn");
+    const healthBtn = document.getElementById("healthBtn");
+
+    function setStatus(kind, text) {
+      statusDot.className = "dot" + (kind ? " " + kind : "");
+      statusText.textContent = text;
+    }
+
+    function addResult(ok, name, detail) {
+      const li = document.createElement("li");
+      li.innerHTML =
+        '<span class="tag ' + (ok ? "pass" : "fail") + '">' + (ok ? "PASS" : "FAIL") + "</span>" +
+        "<div><div>" + name + "</div>" +
+        (detail ? '<div class="meta">' + detail + "</div>" : "") +
+        "</div>";
+      logEl.appendChild(li);
+    }
+
+    async function api(method, path, { token, body } = {}) {
+      const headers = {};
+      if (token) headers.Authorization = "Bearer " + token;
+      if (body !== undefined) headers["Content-Type"] = "application/json";
+      const res = await fetch(API + path, {
+        method,
+        headers,
+        body: body !== undefined ? JSON.stringify(body) : undefined,
+      });
+      const text = await res.text();
+      let json = {};
+      try { json = text ? JSON.parse(text) : {}; } catch { json = { raw: text }; }
+      return { status: res.status, json };
+    }
+
+    async function runHealthOnly() {
+      logEl.innerHTML = "";
+      summaryEl.textContent = "";
+      setStatus("", "Checking…");
+      try {
+        const { status, json } = await api("GET", "/api/health");
+        const ok = status === 200 && json.ok === true;
+        addResult(ok, "GET /api/health", JSON.stringify(json));
+        setStatus(ok ? "ok" : "bad", ok ? "API is up" : "API unhealthy");
+        summaryEl.textContent = ok ? "Health check passed." : "Health check failed.";
+        summaryEl.style.color = ok ? "var(--ok)" : "var(--bad)";
+      } catch (e) {
+        addResult(false, "GET /api/health", String(e.message || e));
+        setStatus("bad", "Cannot reach API — is npm run server running?");
+        summaryEl.textContent = "Could not reach http://localhost:4000";
+        summaryEl.style.color = "var(--bad)";
+      }
+    }
+
+    async function runAll() {
+      runBtn.disabled = true;
+      healthBtn.disabled = true;
+      logEl.innerHTML = "";
+      summaryEl.textContent = "";
+      setStatus("", "Running tests…");
+      let passed = 0;
+      let total = 0;
+
+      async function check(name, fn) {
+        total += 1;
+        try {
+          const detail = await fn();
+          passed += 1;
+          addResult(true, name, detail);
+        } catch (e) {
+          addResult(false, name, String(e.message || e));
+        }
+      }
+
+      try {
+        await check("Health", async () => {
+          const { status, json } = await api("GET", "/api/health");
+          if (status !== 200 || !json.ok) throw new Error("not ok");
+          return "service=" + json.service;
+        });
+
+        let adminToken = "";
+        await check("Admin login", async () => {
+          const { status, json } = await api("POST", "/api/auth/login", {
+            body: { email: "manpreet.singh@example.com", password: "Password123" },
+          });
+          if (status !== 200 || !json.token) throw new Error(JSON.stringify(json));
+          adminToken = json.token;
+          return json.user.name + " (" + json.user.role + ")";
+        });
+
+        let alumniToken = "";
+        await check("Alumni login", async () => {
+          const { status, json } = await api("POST", "/api/auth/login", {
+            body: { email: "arjun.sharma@example.com", password: "Password123" },
+          });
+          if (status !== 200 || !json.token) throw new Error(JSON.stringify(json));
+          alumniToken = json.token;
+          return json.user.name + " (" + json.user.role + ")";
+        });
+
+        await check("List alumni", async () => {
+          const { status, json } = await api("GET", "/api/alumni", { token: alumniToken });
+          if (status !== 200 || !json.alumni?.length) throw new Error(JSON.stringify(json));
+          return json.alumni.length + " profiles";
+        });
+
+        await check("List feed", async () => {
+          const { status, json } = await api("GET", "/api/feed", { token: alumniToken });
+          if (status !== 200 || !json.posts?.length) throw new Error(JSON.stringify(json));
+          return json.posts.length + " posts";
+        });
+
+        await check("Admin create feed post", async () => {
+          const { status, json } = await api("POST", "/api/feed", {
+            token: adminToken,
+            body: {
+              type: "announcement",
+              content: "Visible browser demo post at " + new Date().toLocaleString(),
+            },
+          });
+          if (status !== 201 || !json.post?.id) throw new Error(JSON.stringify(json));
+          return json.post.type + " created";
+        });
+
+        await check("Create college request", async () => {
+          const { status, json } = await api("POST", "/api/colleges/requests", {
+            body: {
+              collegeName: "Browser Demo College",
+              affiliation: "IKGPTU",
+              district: "Chandigarh",
+              address: "Demo Street",
+              authorityName: "Dr. Demo",
+              authorityDesignation: "Principal",
+              authorityEmail: "demo." + Date.now() + "@college.edu",
+              authorityPhone: "9800112233",
+            },
+          });
+          if (status !== 201 || !json.request?.id) throw new Error(JSON.stringify(json));
+          return json.request.status;
+        });
+
+        const allOk = passed === total;
+        setStatus(allOk ? "ok" : "bad", allOk ? "All tests passed" : "Some tests failed");
+        summaryEl.textContent = passed + "/" + total + " passed";
+        summaryEl.style.color = allOk ? "var(--ok)" : "var(--bad)";
+      } catch (e) {
+        setStatus("bad", "Stopped with error");
+        summaryEl.textContent = String(e.message || e);
+        summaryEl.style.color = "var(--bad)";
+      } finally {
+        runBtn.disabled = false;
+        healthBtn.disabled = false;
+      }
+    }
+
+    runBtn.addEventListener("click", runAll);
+    healthBtn.addEventListener("click", runHealthOnly);
+    // Auto-run so you see results immediately when opening the page
+    runAll();
+  </script>
+</body>
+</html>

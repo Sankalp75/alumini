@@ -6,7 +6,6 @@ import { Card } from "@/components/ui/card";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { ProfileForm } from "@/components/alumni/profile-form";
 import { registerWithEmail } from "@/lib/auth";
-import { createAlumniProfile } from "@/lib/firestore";
 import { useAuth } from "@/hooks/use-auth";
 import { useToast } from "@/hooks/use-toast";
 import { AlertCircle } from "lucide-react";
@@ -40,12 +39,8 @@ export default function RegisterPage() {
     }
     setIsSubmitting(true);
     try {
-      const cred = await registerWithEmail(v.email, v.password);
-      const uid = cred.user.uid;
-      await createAlumniProfile(uid, {
-        uid,
+      await registerWithEmail(v.email, v.password, {
         name: v.name,
-        email: v.email,
         batch: v.batch,
         branch: v.branch,
         college: v.college,
@@ -53,16 +48,14 @@ export default function RegisterPage() {
         location: v.location || "",
         contact: v.contact || "",
         linkedinUrl: v.linkedinUrl || "",
-        photoURL: "",
-        role: "alumni",
       });
       toast({ title: "Profile created", description: "Your profile now appears in the directory. Batchmates can find you by name or company.", variant: "success" });
       router.push("/directory");
     } catch (e: any) {
-      const code = e?.code || "";
-      if (code === "auth/email-already-in-use") setError("Email already registered. Try logging in.");
-      else if (code.includes("weak-password")) setError("Password too weak. Use at least 8 characters with letters and numbers.");
-      else setError(e?.message || "Registration failed. Please try again.");
+      const msg = e?.message || "";
+      if (msg.toLowerCase().includes("already")) setError("Email already registered. Try logging in.");
+      else if (msg.toLowerCase().includes("password")) setError("Password too weak. Use at least 6 characters.");
+      else setError(msg || "Registration failed. Please try again.");
     } finally {
       setIsSubmitting(false);
     }

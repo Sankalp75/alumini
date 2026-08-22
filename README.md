@@ -1,169 +1,177 @@
 # Alumni Connect
 
-> **Centralized Alumni Data Management & Engagement Platform**
+> **Centralized Alumni Data Management & Engagement Platform**  
 > Built for **Smart India Hackathon 2026 — Practice Round** · PS ID: **SIH25019** · Government of Punjab · Theme: Smart Education
 
 Alumni Connect replaces scattered institutional spreadsheets with a live, searchable alumni directory and engagement feed — owned by the institution, kept current by alumni themselves.
 
 ---
 
-## ✨ Features
+## Features
 
-- 🔐 **Authentication** — secure email/password sign-up and sign-in with role-based routing (alumni → directory, admin → dashboard)
-- 👤 **Profile Management** — alumni create and update their details: batch, branch, company, location, contact, LinkedIn
-- 🔍 **Searchable Directory** — instant search plus batch and branch filters across the alumni card grid
-- 📢 **Engagement Feed** — announcements, job postings, and events posted by admins, newest first
-- 🛠️ **Admin Dashboard** — full alumni table with search, sorting, pagination, role badges, and CSV export
-- 🏛️ **College Pages** — institutional overview and college registration requests
+- **Authentication** — email/password sign-up and sign-in with JWT (alumni → directory, admin → dashboard)
+- **Profile Management** — batch, branch, college, company, location, contact, LinkedIn
+- **Searchable Directory** — search plus batch and branch filters
+- **Engagement Feed** — announcements, jobs, and events posted by admins
+- **Admin Dashboard** — alumni table, CSV export, college registration approve/reject
+- **College Pages** — institutional overview and college registration requests
 
 ### Roadmap
 
-- 🤝 Mentorship matching between alumni and students
-- 💼 Job board with application tracking
-- 📅 Event RSVPs and reunion management
-- 📊 Institution analytics (batch-wise placement stats, engagement metrics)
+- Alumni verification queue (pending → admin approve)
+- Public/open college datasets for richer institution lists
+- Mentorship, job applications, event RSVPs, deeper analytics
 
 ---
 
-## 🧰 Tech Stack
+## Tech Stack
 
 | Layer | Technology |
 |---|---|
-| Framework | [Next.js 14](https://nextjs.org/) (App Router) + React 18 + TypeScript |
-| Styling | Tailwind CSS v3 + [shadcn/ui](https://ui.shadcn.com/) |
-| Backend | Firebase — Authentication (Email/Password) + Firestore |
-| Forms | React Hook Form + Zod validation |
-| Icons | Lucide React |
+| Frontend | Next.js 14 (App Router) + React 18 + TypeScript |
+| Styling | Tailwind CSS v3 + shadcn/ui |
+| **Backend (only)** | **Node.js + Express** |
+| Database | SQLite via Node built-in `node:sqlite` |
+| Auth | JWT + bcrypt |
+| Forms | React Hook Form + Zod |
+
+Firebase has been removed. Express is the sole backend.
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
-- Node.js 18+
-- A free [Firebase](https://firebase.google.com/) project
+- Node.js 20+
 
 ### Setup
 
 1. **Clone and install**
 
    ```bash
-   git clone https://github.com/<your-username>/alumni-connect.git
-   cd alumni-connect
+   git clone https://github.com/Sankalp75/alumini.git
+   cd alumini
    npm install
    ```
 
-2. **Configure Firebase**
-
-   - Create a project in the [Firebase Console](https://console.firebase.google.com/)
-   - Enable **Authentication → Email/Password**
-   - Enable **Firestore Database** and deploy the rules from [`firestore.rules`](./firestore.rules)
-
-3. **Add environment variables**
+2. **Environment**
 
    ```bash
+   cp .env.example .env
    cp .env.local.example .env.local
    ```
 
-   Fill in your Firebase web app config:
+   Edit secrets if needed (`JWT_SECRET`). Defaults work for local demo.
 
-   ```env
-   NEXT_PUBLIC_FIREBASE_API_KEY=...
-   NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=...
-   NEXT_PUBLIC_FIREBASE_PROJECT_ID=...
-   NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=...
-   NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=...
-   NEXT_PUBLIC_FIREBASE_APP_ID=...
-   ```
-
-4. **Seed demo data** (20 dummy alumni records for demos/testing)
+3. **Start API + frontend** (two terminals)
 
    ```bash
-   npm run seed
+   npm run server    # Express → http://localhost:4000
+   npm run dev       # Next.js → http://localhost:3000
    ```
 
-5. **Run locally**
+4. **Seed** (auto-runs on first API start if DB empty; or force)
 
    ```bash
-   npm run dev
+   npm run seed -- --force
    ```
 
-   Open [http://localhost:3000](http://localhost:3000).
+5. **API smoke test** (API must be running)
 
-> **Making an admin:** register normally, then set `role: "admin"` on that user's document in `alumni_profiles/{uid}` via the Firestore console. The feed composer and `/admin` route unlock for that account.
+   ```bash
+   npm run test:api
+   ```
+
+   Live test UI: http://localhost:4000/demo
+
+### Demo accounts
+
+Password for all seeded users: `Password123`
+
+| Role | Email |
+|---|---|
+| Admin | `manpreet.singh@example.com` |
+| Alumni | `arjun.sharma@example.com` |
+
+Admin unlocks `/admin`, feed composer, and college request approval.
 
 ---
 
-## 📂 Project Structure
+## Project Structure
 
 ```
 alumni-connect/
-├── app/                    # Next.js App Router pages
-│   ├── page.tsx            # Landing page (/)
-│   ├── (auth)/             # /login, /register
-│   ├── directory/          # Searchable alumni directory
-│   ├── profile/[id]/       # Profile view/edit
-│   ├── feed/               # Engagement feed (+ admin composer)
-│   ├── admin/              # Admin dashboard (admin-only)
-│   └── colleges/           # College pages + registration request
-├── components/
-│   ├── ui/                 # shadcn/ui primitives
-│   ├── layout/             # Navbar, footer, auth provider
-│   ├── alumni/             # Cards, grid, filters, forms
-│   ├── feed/               # Post cards, composer, list
-│   └── admin/              # Table, CSV export
-├── lib/                    # Firebase init, Firestore helpers, validators, seed
-├── hooks/                  # Auth hooks, debounce
-├── types/                  # Shared TypeScript types
-└── firestore.rules         # Security rules
+├── app/                 # Next.js pages (login, directory, feed, admin, colleges)
+├── components/          # UI
+├── hooks/
+├── lib/                 # api.ts, auth.ts, firestore.ts (Express client helpers), validators
+├── server/              # Express API + SQLite schema + seed
+│   ├── index.ts
+│   ├── routes/
+│   ├── middleware/
+│   └── data/            # alumniconnect.db (gitignored)
+├── types/
+└── LOCAL_TESTING.md
 ```
 
 ---
 
-## 🔒 Data Model & Security
+## API (Express)
 
-Two Firestore collections:
-
-| Collection | Doc ID | Access |
+| Method | Path | Notes |
 |---|---|---|
-| `alumni_profiles` | Auth UID (one-to-one) | Signed-in read; owner writes own doc (role immutable); admin writes any |
-| `feed_posts` | Auto-ID | Signed-in read; **admin-only create** |
-
-Rules enforce all of this server-side — see [`firestore.rules`](./firestore.rules). Users cannot self-elevate to admin; the role is set manually per institution.
+| GET | `/api/health` | Liveness |
+| POST | `/api/auth/register` | Create user + profile |
+| POST | `/api/auth/login` | JWT |
+| GET | `/api/auth/me` | Current profile |
+| GET/PATCH | `/api/alumni`, `/api/alumni/:id` | Directory / profile |
+| GET/POST | `/api/feed` | List / admin create |
+| POST/GET/PATCH | `/api/colleges/requests` | Public create; admin list/update |
 
 ---
 
-## 📜 Available Scripts
+## Data model
+
+- **Alumni & feed posts** — stored in your Express SQLite DB (user-generated / seeded). Not from public personal-data APIs.
+- **College list** — curated Punjab list in `lib/colleges.ts` + authority registration requests verified by admins.
+- Future: enrich colleges from open government / AICTE-style open datasets.
+
+---
+
+## Deploy notes
+
+- Frontend and API are separate processes. Set `NEXT_PUBLIC_API_URL` to your public API URL.
+- Prefer Postgres for multi-instance production; SQLite is fine for SIH local/demo on one server.
+- This does **not** update https://alumniconnect-1.ai.studio/ (separate AI Studio mockup).
+
+---
+
+## Scripts
 
 | Command | Description |
 |---|---|
-| `npm run dev` | Start dev server at `localhost:3000` |
-| `npm run build` | Production build |
-| `npm start` | Serve production build |
-| `npm run lint` | ESLint check |
-| `npm run seed` | Seed 20 demo alumni records into Firestore |
+| `npm run dev` | Next.js on :3000 |
+| `npm run server` | Express on :4000 |
+| `npm run seed` | Seed SQLite |
+| `npm run test:api` | Gate A API checks |
+| `npm run build` | Production Next build |
+| `npm run lint` | ESLint |
 
 ---
 
-## 🖼️ Screenshots
-
-_Add screenshots of the working prototype here before submission._
-
----
-
-## 👥 Team
+## Team
 
 | Name | Role |
 |---|---|
 | _Add name_ | Team Lead |
 | _Add name_ | Frontend |
-| _Add name_ | Backend / Firebase |
+| _Add name_ | Backend / Express |
 | _Add name_ | UI/UX Design |
 | _Add name_ | Testing & Presentation |
 
 ---
 
-## 📄 License
+## License
 
 Built for educational/hackathon purposes as part of Smart India Hackathon 2026.

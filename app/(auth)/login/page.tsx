@@ -9,7 +9,6 @@ import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useToast } from "@/hooks/use-toast";
 import { loginWithEmail, resetPassword } from "@/lib/auth";
-import { getAlumniProfile } from "@/lib/firestore";
 import { AlertCircle, Eye, EyeOff } from "lucide-react";
 
 export default function LoginPage() {
@@ -28,9 +27,8 @@ export default function LoginPage() {
     setLoading(true);
     try {
       const cred = await loginWithEmail(email, password);
-      const profile = await getAlumniProfile(cred.user.uid);
       toast({ title: "Welcome back!", variant: "success" });
-      if (profile?.role === "admin") router.push("/admin");
+      if (cred.profile?.role === "admin") router.push("/admin");
       else router.push("/directory");
     } catch (err: any) {
       setError("Invalid email or password.");
