@@ -1,4 +1,3 @@
-import type { Timestamp } from "firebase/firestore";
 export type Branch = "CSE" | "ECE" | "ME" | "CE" | "EE" | "IT" | "Other";
 export type AlumniRole = "alumni" | "admin";
 export interface AlumniProfile {
@@ -7,17 +6,17 @@ export interface AlumniProfile {
   email: string;
   batch: string;
   branch: Branch;
-  college: string; // full college name from PUNJAB_COLLEGES (government + NIT/IIT)
+  college: string;
   company: string;
   location: string;
   contact: string;
   linkedinUrl: string;
   photoURL: string;
   role: AlumniRole;
-  createdAt: Timestamp;
-  updatedAt: Timestamp;
+  createdAt: string;
+  updatedAt: string;
 }
 export type AlumniProfileInput = Omit<AlumniProfile, "createdAt" | "updatedAt"> & {
-  createdAt?: Timestamp;
-  updatedAt?: Timestamp;
+  createdAt?: string;
+  updatedAt?: string;
 };

@@ -1,10 +1,10 @@
 "use client";
 import { createContext, useContext } from "react";
-import type { User } from "firebase/auth";
+import type { AuthUser } from "@/lib/auth";
 import type { AlumniProfile } from "@/types/alumni";
 
 export interface AuthContextValue {
-  user: User | null;
+  user: AuthUser | null;
   profile: AlumniProfile | null;
   loading: boolean;
   isAdmin: boolean;

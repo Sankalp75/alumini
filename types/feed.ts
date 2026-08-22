@@ -1,4 +1,3 @@
-import type { Timestamp } from "firebase/firestore";
 export type FeedPostType = "announcement" | "job" | "event";
 export interface FeedPost {
   id: string;
@@ -8,7 +7,7 @@ export interface FeedPost {
   type: FeedPostType;
   content: string;
   link?: string;
-  createdAt: Timestamp;
-  updatedAt?: Timestamp;
+  createdAt: string;
+  updatedAt?: string;
 }
 export type FeedPostInput = Omit<FeedPost, "id" | "createdAt" | "updatedAt">;

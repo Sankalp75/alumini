@@ -1,20 +1,19 @@
-import type { Timestamp } from "firebase/firestore";
 export type CollegeRequestStatus = "pending" | "approved" | "rejected";
 export interface CollegeRequest {
   id: string;
   collegeName: string;
-  affiliation: string; // e.g. "IKGPTU", "Punjabi University", "Autonomous"
-  district: string; // e.g. "Ludhiana"
+  affiliation: string;
+  district: string;
   address: string;
   aicteCode?: string;
   authorityName: string;
-  authorityDesignation: string; // Principal, Registrar, Director
+  authorityDesignation: string;
   authorityEmail: string;
   authorityPhone: string;
   officialWebsite?: string;
   status: CollegeRequestStatus;
-  requestedBy?: string; // uid if logged in
-  createdAt: Timestamp;
-  updatedAt?: Timestamp;
+  requestedBy?: string | null;
+  createdAt: string;
+  updatedAt?: string;
 }
 export type CollegeRequestInput = Omit<CollegeRequest, "id" | "createdAt" | "updatedAt" | "status">;
